@@ -4,5 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/CUbePuzzle/Scenes/MainMenu.unity
+    guid: 392a4b8be33a7a040871cb9e2630c8fd
+  - enabled: 1
+    path: Assets/CUbePuzzle/Scenes/Gameplay.unity
+    guid: 2f4af08f980920f469f37b66cf62454f
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

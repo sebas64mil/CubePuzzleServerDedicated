@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class ManagerPiositionCLient : MonoBehaviour
 {
     [SerializeField] private ApiClient api;
     [SerializeField] private List<PlayerController> players;
