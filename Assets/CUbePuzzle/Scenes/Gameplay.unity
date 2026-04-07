@@ -520,6 +520,7 @@ MonoBehaviour:
   conetionManager: {fileID: 1986199313}
   gameId: 1
   pollInterval: 0.2
+  remoteTimeout: 1
   players:
   - {fileID: 2812152626566591570}
   - {fileID: 2194858595467357781}
@@ -718,10 +719,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6554165071148819244, guid: 8fa2ef216ee634b4dab899facfaf6bab, type: 3}
-      propertyPath: clickMover
-      value: 
-      objectReference: {fileID: 2812152626566591571}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -738,17 +735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17e624f2abc8464fa8f10633d464d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
---- !u!114 &2812152626566591571 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 646268658185899234, guid: 8fa2ef216ee634b4dab899facfaf6bab, type: 3}
-  m_PrefabInstance: {fileID: 2812152626566591569}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cf6c4a6aeb455340b5a3a549daa4dbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerClickMover
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

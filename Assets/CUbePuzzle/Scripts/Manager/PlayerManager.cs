@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private ConetionManager conetionManager;
     [SerializeField] private string gameId = "1";
     [SerializeField] private float pollInterval = 0.2f;
+    [SerializeField] private float remoteTimeout = 1.0f;
 
     [Header("Players (index == playerId)")]
     [SerializeField] private List<PlayerController> players;
@@ -17,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     private Coroutine _pollCoroutine;
 
     private bool _remoteSeen = false;
+    private float _lastRemoteReceivedTime = Mathf.NegativeInfinity;
 
     private PlayerClickMover _clickMover;
 
@@ -31,7 +33,6 @@ public class PlayerManager : MonoBehaviour
             return;
         }
 
-        // Ocultar visual del remoto hasta recibir su primera posición
         var remote = players[otherId];
         if (remote != null && remote.gameObject != null)
         {
@@ -46,7 +47,6 @@ public class PlayerManager : MonoBehaviour
 
         conetionManager.OnDataReceived += OnDataReceived;
 
-        // Obtener PlayerClickMover desde el PlayerController local (evita FindObjectOfType)
         var localController = players[myId];
         if (localController != null && localController.clickMover != null)
         {
@@ -58,8 +58,20 @@ public class PlayerManager : MonoBehaviour
             Debug.LogWarning("PlayerManager: PlayerClickMover no asignado en el PlayerController local. Asigna 'clickMover' en el prefab o en escena.");
         }
 
-        // Empieza polling en coroutine (ConetionManager hace las llamadas async)
         _pollCoroutine = StartCoroutine(PollRoutine());
+    }
+
+    private void Update()
+    {
+        if (_remoteSeen && Time.time - _lastRemoteReceivedTime > remoteTimeout)
+        {
+            var remote = players[otherId];
+            if (remote != null && remote.gameObject != null)
+            {
+                remote.gameObject.SetActive(false);
+            }
+            _remoteSeen = false;
+        }
     }
 
     private void HandleTargetSelected(Vector3 targetPosition)
@@ -71,7 +83,6 @@ public class PlayerManager : MonoBehaviour
             local.MovePlayer(targetPosition);
         }
 
-        // Enviar posición inmediatamente al servidor (fire-and-forget)
         if (conetionManager != null)
         {
             var pdata = new PlayerData
@@ -91,10 +102,8 @@ public class PlayerManager : MonoBehaviour
 
         while (true)
         {
-            // Pedir posición del otro cliente (ConetionManager invocará OnDataReceived cuando llegue)
             _ = conetionManager.GetPlayerDataAsync(gameId, otherId.ToString());
 
-            // Enviar nuestra posición periódicamente también (por si hay cambios fuera de clicks)
             var localController = players[myId];
             if (localController != null)
             {
@@ -113,7 +122,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // Ahora trabaja únicamente con PlayerData
     private void OnDataReceived(int playerId, PlayerData data)
     {
         if (players == null) return;
@@ -121,16 +129,25 @@ public class PlayerManager : MonoBehaviour
         var controller = players[playerId];
         if (controller == null || data == null) return;
 
-        // activar remoto la primera vez que llega data
-        if (playerId == otherId && !_remoteSeen)
+        if (playerId == otherId)
         {
-            var go = controller.gameObject;
-            if (go != null) go.SetActive(true);
-            _remoteSeen = true;
-        }
+            _lastRemoteReceivedTime = Time.time;
 
-        Vector3 position = new Vector3(data.posX, data.posY, data.posZ);
-        controller.MovePlayer(position);
+            if (!_remoteSeen)
+            {
+                var go = controller.gameObject;
+                if (go != null) go.SetActive(true);
+                _remoteSeen = true;
+            }
+
+            Vector3 position = new Vector3(data.posX, data.posY, data.posZ);
+            controller.MovePlayer(position);
+        }
+        else
+        {
+            Vector3 position = new Vector3(data.posX, data.posY, data.posZ);
+            controller.MovePlayer(position);
+        }
     }
 
     void OnDisable()

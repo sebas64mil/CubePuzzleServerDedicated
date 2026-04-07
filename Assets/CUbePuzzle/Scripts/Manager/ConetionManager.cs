@@ -24,11 +24,33 @@ public class ConetionManager : MonoBehaviour
             {
                 Debug.LogError($"GET Error: {webRequest.error}");
                 Debug.LogError($"Response: {webRequest.downloadHandler.text}");
+                return;
             }
-            else
+
+            string text = webRequest.downloadHandler.text;
+            if (string.IsNullOrWhiteSpace(text))
             {
-                var data = JsonUtility.FromJson<PlayerData>(webRequest.downloadHandler.text);
+                return;
+            }
+
+            if (!(text.Contains("posX") || text.Contains("posY") || text.Contains("posZ")))
+            {
+                return;
+            }
+
+            try
+            {
+                var data = JsonUtility.FromJson<PlayerData>(text);
+                if (data == null)
+                {
+                    return;
+                }
+
                 OnDataReceived?.Invoke(Convert.ToInt32(playerId), data);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"GET parse error: {ex.Message}");
             }
         }
     }

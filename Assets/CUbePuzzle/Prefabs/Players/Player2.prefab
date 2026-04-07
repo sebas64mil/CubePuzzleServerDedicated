@@ -179,6 +179,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   playerId: 1
   clickMover: {fileID: 0}
+  agentRadius: 0.5
+  agentHeight: 1
+  baseAvoidancePriority: 50
+  avoidanceType: 3
+  useAutoBraking: 1
 --- !u!114 &4961876606306163830
 MonoBehaviour:
   m_ObjectHideFlags: 0
