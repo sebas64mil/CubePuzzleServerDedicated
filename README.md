@@ -125,7 +125,6 @@ flowchart TB
     PollingClient --> PlayerManager
 
     %% Flujo de datos
-    ApiClient -->|GET/POST| ServerData
     ManagerPiositionCLient -->|Actualiza posición| PlayerController
     PlayerController -->|Obtiene posición| PlayerData
 ```
