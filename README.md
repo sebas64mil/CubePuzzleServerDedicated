@@ -84,6 +84,53 @@ GameManager/LevelManager (Actualiza Estado)
 PlayerManager/SpawnManager (Actualiza Entidades)
 ```
 
----
 
+## 📊 Diagrama de Flujo de Scripts
+
+```mermaid
+flowchart TB
+    %% Bootstraps y Managers principales
+    GameManager["GameManager"]
+    LevelManager["LevelManager"]
+    MenuClientSelector["MenuClientSelector"]
+    PlayerManager["PlayerManager"]
+    ConetionManager["ConetionManager"]
+
+    %% Player
+    PlayerController["PlayerController"]
+    PlayerClickMover["PlayerClickMover"]
+    PlayerData["PlayerData"]
+    SelectedPlayer["SelectedPlayer"]
+
+    %% Network y API
+    PollingClient["PollingClient"]
+    ApiClient["ApiClient"]
+    ManagerPiositionCLient["ManagerPiositionCLient"]
+    ServerData["ServerData"]
+
+    %% Relaciones principales
+    GameManager --> LevelManager
+    LevelManager --> GameManager
+    MenuClientSelector --> SelectedPlayer
+    PlayerManager --> ConetionManager
+    PlayerManager --> PlayerController
+    PlayerManager --> SelectedPlayer
+    PlayerController --> PlayerClickMover
+    PlayerController --> PlayerData
+    PlayerClickMover --> PlayerController
+
+    %% Network/API
+    ConetionManager --> PlayerData
+    ConetionManager --> PlayerManager
+    PollingClient --> PlayerManager
+    ApiClient --> ServerData
+    ManagerPiositionCLient --> ApiClient
+    ManagerPiositionCLient --> PlayerController
+    ManagerPiositionCLient --> ServerData
+
+    %% Flujo de datos
+    ApiClient -->|GET/POST| ServerData
+    ManagerPiositionCLient -->|Actualiza posición| PlayerController
+    PlayerController -->|Obtiene posición| PlayerData
+```
 **Nota**: Este proyecto está diseñado para ejecutarse con un servidor dedicado que valida y sincroniza el estado del juego en tiempo real.
