@@ -104,9 +104,6 @@ flowchart TB
 
     %% Network y API
     PollingClient["PollingClient"]
-    ApiClient["ApiClient"]
-    ManagerPiositionCLient["ManagerPiositionCLient"]
-    ServerData["ServerData"]
 
     %% Relaciones principales
     GameManager --> LevelManager
@@ -125,7 +122,6 @@ flowchart TB
     PollingClient --> PlayerManager
 
     %% Flujo de datos
-    ManagerPiositionCLient -->|Actualiza posición| PlayerController
     PlayerController -->|Obtiene posición| PlayerData
 ```
 **Nota**: Este proyecto está diseñado para ejecutarse con un servidor dedicado que valida y sincroniza el estado del juego en tiempo real.
