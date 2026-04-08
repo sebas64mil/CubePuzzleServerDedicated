@@ -123,10 +123,6 @@ flowchart TB
     ConetionManager --> PlayerData
     ConetionManager --> PlayerManager
     PollingClient --> PlayerManager
-    ApiClient --> ServerData
-    ManagerPiositionCLient --> ApiClient
-    ManagerPiositionCLient --> PlayerController
-    ManagerPiositionCLient --> ServerData
 
     %% Flujo de datos
     ApiClient -->|GET/POST| ServerData
