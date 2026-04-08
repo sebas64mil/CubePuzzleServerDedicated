@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour
     {
         IsPaused = pause;
         Time.timeScale = pause ? 0f : 1f;
-        SetCursor(pause);
     }
 
     // ----------------- Restart ------------------

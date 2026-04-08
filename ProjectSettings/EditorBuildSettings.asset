@@ -11,5 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/CUbePuzzle/Scenes/Gameplay.unity
     guid: 2f4af08f980920f469f37b66cf62454f
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 140dcb0770507c141bce1717dc0bc42a, type: 3}
   m_UseUCBPForAssetBundles: 0

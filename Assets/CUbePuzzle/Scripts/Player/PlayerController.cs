@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,7 +17,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ObstacleAvoidanceType avoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
     [SerializeField] private bool useAutoBraking = true;
 
+    [Header("OffMeshLink Jump")]
+    [Tooltip("Nombre del area NavMesh que identifica links de salto. Dejar vacío para aceptar cualquier OffMeshLink.")]
+    [SerializeField] private string jumpAreaName = "Jump";
+    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float jumpDuration = 0.6f;
+
     private NavMeshAgent _agent;
+    private bool _isTraversingLink = false;
 
     void Awake()
     {
@@ -36,6 +45,70 @@ public class PlayerController : MonoBehaviour
 
         _agent.updatePosition = true;
         _agent.updateRotation = true;
+
+        _agent.autoTraverseOffMeshLink = false;
+    }
+
+    void Update()
+    {
+        if (_agent != null && _agent.isOnNavMesh && _agent.isOnOffMeshLink && !_isTraversingLink)
+        {
+            var data = _agent.currentOffMeshLinkData;
+            bool shouldJump = false;
+
+            if (data.owner != null)
+            {
+
+                var owner = data.owner;
+                var ownerType = owner.GetType();
+                var areaProp = ownerType.GetProperty("area", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                if (areaProp != null)
+                {
+                    try
+                    {
+                        object val = areaProp.GetValue(owner);
+                        if (val is int linkArea)
+                        {
+                            if (string.IsNullOrEmpty(jumpAreaName))
+                            {
+                                shouldJump = true;
+                            }
+                            else
+                            {
+                                int jumpArea = NavMesh.GetAreaFromName(jumpAreaName);
+                                if (linkArea == jumpArea) shouldJump = true;
+                            }
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(jumpAreaName)) shouldJump = true;
+                        }
+                    }
+                    catch
+                    {
+                        if (string.IsNullOrEmpty(jumpAreaName)) shouldJump = true;
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(jumpAreaName)) shouldJump = true;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(jumpAreaName)) shouldJump = true;
+            }
+
+            if (shouldJump)
+            {
+                StartCoroutine(TraverseJumpOffMeshLink(data.startPos, data.endPos));
+            }
+            else
+            {
+                _agent.CompleteOffMeshLink();
+            }
+        }
     }
 
     public void MovePlayer(Vector3 position)
@@ -55,4 +128,25 @@ public class PlayerController : MonoBehaviour
         return transform.position;
     }
 
+    private IEnumerator TraverseJumpOffMeshLink(Vector3 startPos, Vector3 endPos)
+    {
+        _isTraversingLink = true;
+        _agent.updatePosition = false;
+
+        float elapsed = 0f;
+        while (elapsed < jumpDuration)
+        {
+            float t = Mathf.Clamp01(elapsed / jumpDuration);
+            Vector3 pos = Vector3.Lerp(startPos, endPos, t);
+            pos.y += Mathf.Sin(t * Mathf.PI) * jumpHeight;
+            _agent.transform.position = pos;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        _agent.transform.position = endPos;
+        _agent.CompleteOffMeshLink();
+        _agent.updatePosition = true;
+        _isTraversingLink = false;
+    }
 }

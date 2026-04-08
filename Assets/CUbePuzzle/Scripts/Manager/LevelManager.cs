@@ -1,72 +1,51 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LevelManager : MonoBehaviour
 {
-    // ----------------- Change Scene ------------------
-    public void ChangeScene(string sceneName)
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private InputActionReference pauseAction;
+
+    private bool isPaused = false;
+
+    private void OnEnable()
     {
-        if (GameManager.Instance == null)
+        if (pauseAction != null && pauseAction.action != null)
         {
-            Debug.LogWarning("GameManager not initialized");
-            return;
+            pauseAction.action.Enable();
+            pauseAction.action.performed += OnPausePressed;
         }
-
-        GameManager.Instance.ChangeScene(sceneName);
     }
 
-    // ----------------- Quit Game ------------------
-    public void QuitGame()
+    private void OnDisable()
     {
-        if (GameManager.Instance == null)
+        if (pauseAction != null && pauseAction.action != null)
         {
-            Debug.LogWarning("GameManager not initialized");
-            return;
+            pauseAction.action.performed -= OnPausePressed;
+            pauseAction.action.Disable();
         }
-
-        GameManager.Instance.QuitGame();
     }
 
-    // ----------------- Pause ------------------
-    public void PauseGame()
+    private void Start()
     {
-        if (GameManager.Instance == null) return;
-
-        GameManager.Instance.GamePause(true);
-    }
-
-    // ----------------- Resume ------------------
-    public void ResumeGame()
-    {
-        if (GameManager.Instance == null) return;
-
+        pauseMenu.SetActive(false);
         GameManager.Instance.GamePause(false);
     }
 
-    // ----------------- Toggle Pause ------------------
-    public void TogglePause()
+    private void OnPausePressed(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance == null) return;
-
-        bool newState = !GameManager.Instance.IsPaused;
-        GameManager.Instance.GamePause(newState);
+        TogglePause();
     }
 
-    // ----------------- Restart ------------------
-    public void RestartLevel()
+    private void TogglePause()
     {
-        if (GameManager.Instance == null) return;
-
-        GameManager.Instance.Restart();
+        isPaused = !isPaused;
+        PauseMenuVisible(isPaused);
     }
 
-    // ----------------- Cursor ------------------
-    public void ShowCursor()
+    public void PauseMenuVisible(bool state)
     {
-        GameManager.Instance?.SetCursor(true);
-    }
-
-    public void HideCursor()
-    {
-        GameManager.Instance?.SetCursor(false);
+        pauseMenu.SetActive(state);
+        GameManager.Instance.GamePause(state);
     }
 }

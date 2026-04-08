@@ -110,7 +110,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -184,6 +184,9 @@ MonoBehaviour:
   baseAvoidancePriority: 50
   avoidanceType: 3
   useAutoBraking: 1
+  jumpAreaName: Jump
+  jumpHeight: 2.5
+  jumpDuration: 1
 --- !u!114 &646268658185899234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,5 +203,5 @@ MonoBehaviour:
   raycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxRayDistance: 100
+  maxRayDistance: 300
   navSampleDistance: 1
