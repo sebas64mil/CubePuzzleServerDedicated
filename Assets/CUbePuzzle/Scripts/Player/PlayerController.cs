@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent _agent;
     private bool _isTraversingLink = false;
 
+    private bool _movementAllowed = true;
+
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -116,6 +118,8 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer(Vector3 position)
     {
+        if (!_movementAllowed) return;
+
         if (_agent != null && _agent.enabled && _agent.isOnNavMesh)
         {
             _agent.SetDestination(position);
@@ -151,5 +155,21 @@ public class PlayerController : MonoBehaviour
         _agent.CompleteOffMeshLink();
         _agent.updatePosition = true;
         _isTraversingLink = false;
+    }
+
+    public void SetMovementAllowed(bool allowed)
+    {
+        _movementAllowed = allowed;
+        if (_agent != null)
+        {
+            _agent.isStopped = !allowed;
+            if (!allowed)
+            {
+                _agent.ResetPath();
+            }
+        }
+
+        if (clickMover != null)
+            clickMover.enabled = allowed;
     }
 }

@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerClickMover _clickMover;
 
+    private Vector3[] _initialPositions;
+
     void Start()
     {
         myId = SelectedPlayer.Id;
@@ -33,9 +35,17 @@ public class PlayerManager : MonoBehaviour
             return;
         }
 
+        _initialPositions = new Vector3[players.Count];
+        for (int i = 0; i < players.Count; i++)
+        {
+            var p = players[i];
+            _initialPositions[i] = p != null ? p.transform.position : Vector3.zero;
+        }
+
         var remote = players[otherId];
         if (remote != null && remote.gameObject != null)
         {
+            remote.MovePlayer(_initialPositions[otherId]);
             remote.gameObject.SetActive(false);
         }
 
@@ -68,6 +78,7 @@ public class PlayerManager : MonoBehaviour
             var remote = players[otherId];
             if (remote != null && remote.gameObject != null)
             {
+                remote.MovePlayer(_initialPositions[otherId]);
                 remote.gameObject.SetActive(false);
             }
             _remoteSeen = false;
@@ -76,7 +87,6 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleTargetSelected(Vector3 targetPosition)
     {
-        // Mover local
         var local = players[myId];
         if (local != null)
         {
@@ -162,6 +172,19 @@ public class PlayerManager : MonoBehaviour
         {
             StopCoroutine(_pollCoroutine);
             _pollCoroutine = null;
+        }
+    }
+
+    public void SetAllPlayersInputAllowed(bool allowed)
+    {
+        if (players == null) return;
+        foreach (var p in players)
+        {
+            if (p == null) continue;
+            if (p.clickMover != null)
+            {
+                p.clickMover.enabled = allowed;
+            }
         }
     }
 }

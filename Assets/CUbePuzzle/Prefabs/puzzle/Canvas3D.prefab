@@ -115,6 +115,8 @@ MonoBehaviour:
   promptText: {fileID: 0}
   promptMessage: Presiona la tecla E
   cluePanel: {fileID: 0}
+  clueImage: {fileID: 2513663907356873274}
+  clueSprite: {fileID: 0}
   activateAction: {fileID: -3273948060789409615, guid: 140dcb0770507c141bce1717dc0bc42a, type: 3}
 --- !u!1 &5132092993373126842
 GameObject:

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class Clue : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class Clue : MonoBehaviour
 
     [Tooltip("Panel de pista (UI) que se mostrará al activar la acción. Debe estar en un canvas screen-space y por defecto inactivo.")]
     [SerializeField] private GameObject cluePanel;
+
+    [Tooltip("Componente Image dentro del panel de pista. Arrastra el componente 'Image' del panel aquí.")]
+    [SerializeField] private Image clueImage;
+
+    [Tooltip("Sprite que se mostrará en el Image del panel de pista. Arrastra el asset Sprite aquí.")]
+    [SerializeField] private Sprite clueSprite;
 
     [Tooltip("Referencia a la Input Action (nuevo Input System) que activa la pista.")]
     [SerializeField] private InputActionReference activateAction;
@@ -38,6 +45,7 @@ public class Clue : MonoBehaviour
         if (promptCanvasRoot != null) promptCanvasRoot.SetActive(false);
         if (promptText != null) promptText.gameObject.SetActive(false);
         if (cluePanel != null) cluePanel.SetActive(false);
+        if (clueImage != null) clueImage.gameObject.SetActive(false);
         _clueVisible = false;
     }
 
@@ -67,9 +75,6 @@ public class Clue : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        Debug.Log($"Clue: OnTriggerEnter detectado con '{other.name}' (tag={other.tag}).");
-
         if (other == null) return;
         if (!string.IsNullOrEmpty(requiredTag) && !other.CompareTag(requiredTag)) return;
 
@@ -85,8 +90,6 @@ public class Clue : MonoBehaviour
         ShowPrompt();
 
         if (cluePanel != null) cluePanel.SetActive(false);
-
-        Debug.Log($"Clue: jugador '{other.name}' (id={controller.PlayerId}) entró en zona de pista.");
     }
 
     private void OnTriggerExit(Collider other)
@@ -94,7 +97,6 @@ public class Clue : MonoBehaviour
         if (other == null) return;
         if (!string.IsNullOrEmpty(requiredTag) && !other.CompareTag(requiredTag)) return;
 
-        // Asegurarse de que el collider que sale corresponde al jugador que activó la zona
         var controller = other.GetComponentInParent<PlayerController>();
         if (controller == null) return;
         if (controller.PlayerId != SelectedPlayer.Id) return;
@@ -106,8 +108,6 @@ public class Clue : MonoBehaviour
         _clueVisible = false;
 
         HideAllUi();
-
-        Debug.Log($"Clue: jugador '{other.name}' (id={controller.PlayerId}) salió de zona de pista.");
     }
 
     private void OnActivatePerformed(InputAction.CallbackContext context)
@@ -145,6 +145,7 @@ public class Clue : MonoBehaviour
         }
 
         if (cluePanel != null) cluePanel.SetActive(false);
+        if (clueImage != null) clueImage.gameObject.SetActive(false);
     }
 
     private void ShowClue()
@@ -154,13 +155,20 @@ public class Clue : MonoBehaviour
 
         if (cluePanel != null) cluePanel.SetActive(true);
 
-        Debug.Log("Clue: acción activada, mostrando pista.");
+        if (clueImage != null)
+        {
+            if (clueSprite != null)
+            {
+                clueImage.sprite = clueSprite;
+            }
+            clueImage.gameObject.SetActive(true);
+        }
     }
 
     private void HideClue()
     {
         if (cluePanel != null) cluePanel.SetActive(false);
-        Debug.Log("Clue: pista ocultada.");
+        if (clueImage != null) clueImage.gameObject.SetActive(false);
     }
 
     private void HideAllUi()
@@ -168,6 +176,7 @@ public class Clue : MonoBehaviour
         if (promptCanvasRoot != null) promptCanvasRoot.SetActive(false);
         if (promptText != null) promptText.gameObject.SetActive(false);
         if (cluePanel != null) cluePanel.SetActive(false);
+        if (clueImage != null) clueImage.gameObject.SetActive(false);
     }
 
     private string GetActionDisplayName()

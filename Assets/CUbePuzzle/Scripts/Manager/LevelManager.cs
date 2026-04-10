@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private InputActionReference pauseAction;
 
     private bool isPaused = false;
+    private bool _pauseAllowed = true; 
 
     private void OnEnable()
     {
@@ -34,6 +35,8 @@ public class LevelManager : MonoBehaviour
 
     private void OnPausePressed(InputAction.CallbackContext context)
     {
+        if (!_pauseAllowed) return;
+
         TogglePause();
     }
 
@@ -48,4 +51,17 @@ public class LevelManager : MonoBehaviour
         pauseMenu.SetActive(state);
         GameManager.Instance.GamePause(state);
     }
+
+    public void SetPauseAllowed(bool allowed)
+    {
+        _pauseAllowed = allowed;
+
+        if (!allowed)
+        {
+            isPaused = false;
+            pauseMenu.SetActive(false);
+        }
+    }
+
+    public bool IsPauseAllowed() => _pauseAllowed;
 }
