@@ -24,16 +24,31 @@ public class PlayerClickMover : MonoBehaviour
             if (targetCamera == null) return;
 
             Ray ray = targetCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance, raycastMask))
+
+
+            RaycastHit[] hits = Physics.RaycastAll(ray, maxRayDistance, raycastMask);
+            if (hits == null || hits.Length == 0) return;
+
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            bool foundValidNav = false;
+
+            foreach (var hit in hits)
             {
+                if (hit.collider == null) continue;
+
                 if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, navSampleDistance, NavMesh.AllAreas))
                 {
                     OnTargetSelected?.Invoke(navHit.position);
+                    foundValidNav = true;
+                    break;
                 }
-                else
-                {
-                    Debug.LogWarning("PlayerClickMover: punto fuera de NavMesh.");
-                }
+
+            }
+
+            if (!foundValidNav)
+            {
+                Debug.LogWarning("PlayerClickMover: punto fuera de NavMesh.");
             }
         }
     }

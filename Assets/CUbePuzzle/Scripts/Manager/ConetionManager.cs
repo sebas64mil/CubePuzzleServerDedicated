@@ -22,8 +22,7 @@ public class ConetionManager : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
                 webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"GET Error: {webRequest.error}");
-                Debug.LogError($"Response: {webRequest.downloadHandler.text}");
+
                 return;
             }
 
