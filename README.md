@@ -101,10 +101,17 @@ Contiene toda la lógica relacionada con el control y datos del jugador:
 - **SelectedPlayer.cs**: Gestiona el jugador seleccionado actualmente
 
 #### 🧩 **Puzzle/** - Lógica del Puzzle
-Carpeta reservada para scripts relacionados con la mecánica del puzzle (actualmente vacía).
+Contiene los scripts que gestiona la mecánica del puzzle y validación:
+
+- **PuzzleManager.cs**: Gestor principal del puzzle. Valida el orden correcto de las placas presionadas y dispara evento de victoria
+- **PressurePlate.cs**: Detección de colisiones que activa cuando un jugador pisa la placa. Controla animaciones y bloqueo de placas
+- **VictoryZone.cs**: Define la zona de victoria del nivel. Muestra paneles de victoria personalizados y controla el estado final del juego
 
 #### 🎨 **UI/** - Interfaces de Usuario
-Carpeta reservada para scripts de interfaz de usuario (actualmente vacía).
+Contiene los scripts que manejan los elementos visuales y de interfaz:
+
+- **Clue.cs**: Sistema de pistas interactivas. Muestra un panel con información visual sobre el orden correcto del puzzle
+- **SelectedPlayerIndicator.cs**: Indicador visual que muestra qué jugador está actualmente seleccionado/activo
 
 ---
 
