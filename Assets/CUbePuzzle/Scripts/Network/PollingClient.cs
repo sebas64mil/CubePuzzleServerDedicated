@@ -46,7 +46,7 @@ public class PollingClient : IDisposable
                         {
                             OnJsonReceived?.Invoke(playerId, json);
                         }
-                        // si json es null => skip (404 u otro error manejado)
+                        // If JSON is null => skip (404 or other handled error)
                     }
                     catch (Exception ex)
                     {
@@ -72,7 +72,7 @@ public class PollingClient : IDisposable
 
         if (!response.IsSuccessStatusCode)
         {
-            // evitar lanzar excepción para no spamear la consola; devolver null para indicar fallo
+            // Avoid throwing an exception to prevent spamming the console; return null to indicate failure
             return null;
         }
 
