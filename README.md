@@ -348,31 +348,31 @@ Host: servidor-docker:puerto
 ## 📸 Pantallazos del Juego
 
 ### 1. Menú Principal
-![Menu Principal](ImagesReadme\Menu.png)
+![Menu Principal](./ImagesReadme\Menu.png)
 *Descripción: Pantalla de inicio con opciones para comenzar o salir*
 
 ### 2. Selección de Personaje
-![Selección de Personaje](ImagesReadme\SelectPlayer.png)
+![Selección de Personaje](./ImagesReadme\SelectPlayer.png)
 *Descripción: Pantalla donde el jugador elige entre Agua (Jugador 1) o Fuego (Jugador 2)*
 
 ### 3. Vista del Juego - Gameplay
-![Gameplay](ImagesReadme\SceneGame.png)
+![Gameplay](./ImagesReadme\SceneGame.png)
 *Descripción: Vista en juego mostrando el mapa con placas de presión, pistas y el personaje del jugador*
 
 ### 4. Sistema de Pistas
-![Pistas en el Mapa](ImagesReadme\PanelClue.png)
+![Pistas en el Mapa](./ImagesReadme\PanelClue.png)
 *Descripción: Detalle de las pistas visuales distribuidas en el mapa que guían el orden correcto*
 
 ### 5. Menú de Pausa
-![Menú Pausa](ImagesReadme\MenuPause.png)
+![Menú Pausa](./ImagesReadme\MenuPause.png)
 *Descripción: Menú de pausa con opciones para continuar, reintentar o regresar al menú principal*
 
 ### 6. Panel de Victoria - Jugador 1 (Agua)
-![Victoria Jugador 1](ImagesReadme\VictoryWater.png)
+![Victoria Jugador 1](./ImagesReadme\VictoryWater.png)
 *Descripción: Pantalla de victoria personalizada para el Jugador 1 con tema acuático*
 
 ### 7. Panel de Victoria - Jugador 2 (Fuego)
-![Victoria Jugador 2](ImagesReadme\VictoryFire.png)
+![Victoria Jugador 2](./ImagesReadme\VictoryFire.png)
 *Descripción: Pantalla de victoria personalizada para el Jugador 2 con tema de fuego*
 
 ---
