@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private int playerId;
 
-    // Getter público para permitir que otros componentes verifiquen la id del jugador
     public int PlayerId => playerId;
 
     public PlayerClickMover clickMover;

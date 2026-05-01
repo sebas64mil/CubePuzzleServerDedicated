@@ -23350,7 +23350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
   conetionManager: {fileID: 1986199313}
-  gameId: 1
+  gameId: 2
   pollInterval: 0.2
   remoteTimeout: 1
   players:
@@ -23368,7 +23368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de038e04bd54eb4ab6ba42238b1e64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConetionManager
-  baseUrl: http://localhost:5005/server
+  baseUrl: http://172.17.37.70:5005/server
 --- !u!114 &1986199314
 MonoBehaviour:
   m_ObjectHideFlags: 0
