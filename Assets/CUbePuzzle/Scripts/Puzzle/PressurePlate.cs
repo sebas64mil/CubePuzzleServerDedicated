@@ -13,7 +13,7 @@ public class PressurePlate : MonoBehaviour
     [Tooltip("Animator que controla la animación de la placa.")]
     [SerializeField] private Animator _animator;
 
-    // Control global para habilitar/deshabilitar la detección de placas durante el cooldown del puzzle.
+    // Global control to enable/disable plate detection during puzzle cooldown.
     public static bool GlobalEnabled { get; set; } = true;
 
     public int PlateIndex { get; set; }
