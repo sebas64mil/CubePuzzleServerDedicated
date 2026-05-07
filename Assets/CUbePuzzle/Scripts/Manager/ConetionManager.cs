@@ -6,9 +6,17 @@ using UnityEngine.Networking;
 
 public class ConetionManager : MonoBehaviour
 {
-    public string baseUrl = "http://localhost:5005/server";
+    private string baseUrl;
 
     public event Action<int, PlayerData> OnDataReceived;
+
+
+    private void Awake()
+    {
+        baseUrl = ServerConfig.BaseUrl;
+
+        Debug.Log($"Base URL: {baseUrl}");
+    }
 
     // GET async
     public async Task GetPlayerDataAsync(string gameId, string playerId)
